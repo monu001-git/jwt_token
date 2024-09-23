@@ -11,15 +11,15 @@ use App\Http\Controllers\userController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
-    Route::post('register', 'register');
+    // Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
 });
 
 Route::controller(userController::class)->group(function(){
-    Route::get('user/{id?} ','viewUser'); 
-    Route::get('add-edit-user/{id?}','addUser');
-    Route::get('delete-user/{id}', 'deleteUser');
+    Route::get('user','viewUser'); 
+    Route::post('add-edit-user','addUser');
+    Route::delete('delete-user', 'deleteUser');
 });
 
 
