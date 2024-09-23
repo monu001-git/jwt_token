@@ -49,18 +49,12 @@ class userController extends Controller
         if ($request->isMethod('post')) {
             if ($request->id) {
                 $request->validate([
-                   // 'title' => 'required',
-                   // 'type' => 'required',
-                   // 'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-
+                   'file' => 'file|mimes:jpeg,png,jpg,gif|max:2048'
                 ]);
             } else {
                 $request->validate([
-                   // 'title' => 'required',
-                   // 'type' => 'required',
-                   // 'email' => 'unique:organisation_structures',
-                   // 'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-
+                   'email' => 'unique:users',
+                   'file' => 'file|mimes:jpeg,png,jpg,gif|max:2048'
                 ]);
             }
             $data->fname = ucwords($request->fname);
@@ -88,7 +82,7 @@ class userController extends Controller
             }
             $data->save();
             return response()->json([
-                'status' => 201,
+                'status' => 200,
                 'message' => $msg,
                 'data'=>$data
             ]);
