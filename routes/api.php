@@ -32,8 +32,12 @@ Route::controller(bannerController::class)->group(function(){
 });
 
 Route::controller(menuController::class)->group(function(){
-    Route::get('get-menu','getMenu');
-    Route::get('addMenu/{id?}','addMenu');
+    Route::get('menu','getMenu');
+    Route::post('add-edit-menu','addMenu');
+    Route::delete('delete-menu', 'deleteMenu');
+    Route::get('parent-id','parendId');
+    Route::get('menu-tree', 'buildMenuTree');
+    
 });
 
 Route::controller(commanController::class)->group(function(){
