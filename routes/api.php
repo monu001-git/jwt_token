@@ -8,6 +8,8 @@ use App\Http\Controllers\bannerController;
 use App\Http\Controllers\menuController;
 use App\Http\Controllers\commanController;
 use App\Http\Controllers\userController;
+use App\Http\Controllers\contentController;
+
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
@@ -35,10 +37,17 @@ Route::controller(menuController::class)->group(function(){
     Route::get('menu','getMenu');
     Route::post('add-edit-menu','addMenu');
     Route::delete('delete-menu', 'deleteMenu');
-    Route::get('parent-id','parendId');
+    Route::get('parentMaster','parentMaster');
     Route::get('menu-tree', 'buildMenuTree');
     
 });
+
+Route::controller(contentController::class)->group(function(){
+    Route::get('content','getContent');
+    Route::post('add-edit-content','addContent');
+});
+
+
 
 Route::controller(commanController::class)->group(function(){
     Route::get('status-change/{status}/{id}/{db}','StatusChange');  

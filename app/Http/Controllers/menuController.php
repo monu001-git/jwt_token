@@ -9,7 +9,7 @@ use DB;
 class menuController extends Controller
 {
 
-    public function parendId()
+    public function parentMaster()
     {
      try {
         $menus = DB::table('menus')->get();  
@@ -48,7 +48,7 @@ class menuController extends Controller
 
   
     public function buildMenuTree() {
-        $menus = DB::table('menus')->get();
+        $menus = DB::table('menus')->wherestatus(1)->orderBy('order', 'asc') ->get();
         $menuTree = $this->getMenuTree($menus, 0);
         return response()->json([
             'status' => 200,
