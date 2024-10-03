@@ -11,13 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Schema::create('contents', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('title');
+        //     $table->string('alt')->nullable();
+        //     $table->string('file')->nullable();
+        //     $table->string('contenttitle')->nullable();
+        //     $table->text('conenttext')->nullable();
+        //     $table->string('contentimage')->nullable();
+        //     $table->string('video_text')->nullable();
+        //     $table->string('video_alt')->nullable();
+        //     $table->string('url')->nullable();
+        //     $table->timestamps();
+        // });
+
         Schema::create('contents', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('title'); 
-            $table->string('alt')->nullable(); 
-            $table->string('file')->nullable();
-            $table->timestamps(); 
+            $table->id();
+            $table->string('title');
+            $table->text('description');
+            $table->string('status')->default(0);
+            $table->string('order')->nullable();
+            $table->string('image');
+            $table->timestamps();
         });
+
     }
 
     /**

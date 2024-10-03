@@ -45,6 +45,8 @@ Route::controller(menuController::class)->group(function(){
 Route::controller(contentController::class)->group(function(){
     Route::get('content','getContent');
     Route::post('add-edit-content','addContent');
+    Route::delete('delete-content','deleteContent');
+ 
 });
 
 
