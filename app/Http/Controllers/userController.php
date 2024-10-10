@@ -57,8 +57,8 @@ class userController extends Controller
                    'file' => 'file|mimes:jpeg,png,jpg,gif|max:2048'
                 ]);
             }
-            $data->fname = ucwords($request->fname);
-            $data->lname = ucwords($request->lname);
+            $data->name = ucwords($request->name);
+            // $data->lname = ucwords($request->lname);
             $data->email  = $request->email ;
             $data->description = $request->description;
             $data->gender  = $request->gender ;
