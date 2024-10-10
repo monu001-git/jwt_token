@@ -14,11 +14,18 @@ return new class extends Migration
         Schema::create('orgStructures', function (Blueprint $table) {
             $table->id(); 
             $table->string('name'); 
-            $table->string('description')->nullable(); 
-            $table->string('contact_email')->unique(); 
-            $table->string('contact_phone')->nullable(); 
-            $table->string('address')->nullable(); 
-            $table->string('website')->nullable(); 
+            $table->string('about_us')->nullable(); 
+            $table->string('email')->unique(); 
+            $table->string('phone')->nullable(); 
+            $table->string('instagram')->nullable(); 
+            $table->string('instagram_title')->nullable(); 
+            $table->string('facebook')->nullable(); 
+            $table->string('facebook_title')->nullable();
+            $table->string('twitter')->nullable(); 
+            $table->string('twitter_title')->nullable();
+            $table->string('linkedin')->nullable(); 
+            $table->string('linkedIn_title')->nullable();
+
             $table->timestamps(); 
         });
     }
