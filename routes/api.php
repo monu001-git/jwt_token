@@ -9,6 +9,7 @@ use App\Http\Controllers\menuController;
 use App\Http\Controllers\commanController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\contentController;
+use App\Http\Controllers\homeController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\orgStructuteController;
 
@@ -57,6 +58,11 @@ Route::controller(orgStructuteController::class)->group(function () {
 
 Route::controller(commanController::class)->group(function () {
     Route::get('status-change/{status}/{id}/{db}', 'StatusChange');
+});
+
+Route::controller(homeController::class)->group(function () {
+    Route::get('headerMenu', 'headerMenu');
+    Route::get('footerMenu', 'footerMenu');
 });
 
 Route::post('send-mail', [MailController::class, 'index']);
