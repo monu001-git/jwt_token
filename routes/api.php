@@ -12,6 +12,7 @@ use App\Http\Controllers\contentController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\orgStructuteController;
+use App\Http\Controllers\forgetPasswordController;
 
 
 Route::controller(AuthController::class)->group(function () {
@@ -64,5 +65,14 @@ Route::controller(homeController::class)->group(function () {
     Route::get('headerMenu', 'headerMenu');
     Route::get('footerMenu', 'footerMenu');
 });
+
+Route::controller(forgetPasswordController::class)->group(function () {
+ 
+Route::post('forget-password','submitForgetPasswordForm')->name('forget.password.post'); 
+Route::post('reset-password', 'submitResetPasswordForm')->name('reset.password.post');
+
+});
+
+
 
 Route::post('send-mail', [MailController::class, 'index']);
