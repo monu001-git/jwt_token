@@ -11,28 +11,29 @@ class menuController extends Controller
 
     public function parentMaster()
     {
-     try {
-        $menus = DB::table('menus')->get();  
-        return response()->json([
-            'status' => 200,
-            'message' => 'Data Get Successfully!!!!!!',
-            'data' => $menus
-        ]);
-     } catch (\Exception $e) {
-        \Log::error('An exception occurred: ' . $e->getMessage());
-        return view('pages.error');
-     } catch (\PDOException $e) {
-        \Log::error('A PDOException occurred: ' . $e->getMessage());
-        return view('pages.error');
-     } catch (\Throwable $e) {
-        \Log::error('An unexpected exception occurred: ' . $e->getMessage());
-        return view('pages.error');
-     }
+        try {
+            $menus = DB::table('menus')->get();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data Get Successfully!!!!!!',
+                'data' => $menus
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('An exception occurred: ' . $e->getMessage());
+            return view('pages.error');
+        } catch (\PDOException $e) {
+            \Log::error('A PDOException occurred: ' . $e->getMessage());
+            return view('pages.error');
+        } catch (\Throwable $e) {
+            \Log::error('An unexpected exception occurred: ' . $e->getMessage());
+            return view('pages.error');
+        }
     }
-     
 
-    
-    public function getMenuTree($menus, $parentId = 0) {
+
+
+    public function getMenuTree($menus, $parentId = 0)
+    {
         $branch = array();
         foreach ($menus as $menu) {
             if ($menu->parent_id == $parentId) {
@@ -46,9 +47,10 @@ class menuController extends Controller
         return $branch;
     }
 
-  
-    public function buildMenuTree() {
-        $menus = DB::table('menus')->wherestatus(1)->orderBy('order', 'asc') ->get();
+
+    public function buildMenuTree()
+    {
+        $menus = DB::table('menus')->wherestatus(1)->orderBy('order', 'asc')->get();
         $menuTree = $this->getMenuTree($menus, 0);
         return response()->json([
             'status' => 200,
@@ -60,64 +62,130 @@ class menuController extends Controller
 
     public function getMenu(Request $request)
     {
-        if($request->id){
-           $menus = DB::table('menus')->whereId($request->id)->first();
-        }else{
-             $menus = DB::table('menus')->get();
+        try {
+            if ($request->id) {
+                $menus = DB::table('menus')->whereId($request->id)->first();
+            } else {
+                $menus = DB::table('menus')->get();
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data Get Successfully!!!!!!',
+                'data' => $menus
+            ]);
+        } catch (\PDOException $e) {
+            \Log::error('A PDOException occurred: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'Database error occurred.',
+                'error' => $e->getMessage()
+            ], 500);
+        } catch (\Exception $e) {
+            \Log::error('An exception occurred: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'An error occurred while fetching the data.',
+                'error' => $e->getMessage()
+            ], 500);
+        } catch (\Throwable $e) {
+            \Log::error('An unexpected exception occurred: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'An unexpected error occurred.',
+                'error' => $e->getMessage()
+            ], 500);
         }
-    
-        return response()->json([
-            'status' => 200,
-            'message' => 'Data Get Successfully!!!!!!',
-            'data' => $menus
-        ]);
     }
 
-    public function deleteMenu(Request $request){
-
-        $user = menu::find($request->id)->delete();
-        return response()->json([
-            'status' => 200,
-            'message' => 'Data Delete Successfully!!!!!!',
-            'data' => $user
-        ]);
+    public function deleteMenu(Request $request)
+    {
+        try {
+            $user = menu::find($request->id)->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Data Delete Successfully!!!!!!',
+                'data' => $user
+            ]);
+        } catch (\PDOException $e) {
+            \Log::error('A PDOException occurred: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'Database error occurred.',
+                'error' => $e->getMessage()
+            ], 500);
+        } catch (\Exception $e) {
+            \Log::error('An exception occurred: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'An error occurred while fetching the data.',
+                'error' => $e->getMessage()
+            ], 500);
+        } catch (\Throwable $e) {
+            \Log::error('An unexpected exception occurred: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'An unexpected error occurred.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     function addMenu(Request $request)
     {
-        if ($request->id) {
-           // $title = "Edit User";
-            $msg = "Menu Edited Successfully!";
-            $data = menu::find($request->id);
-        } else {
-           // $title = "Add User";
-            $msg = "Menu Added Successfully!";
-            $data = new menu;
-        }
-
-        if ($request->isMethod('post')) {
+        try {
             if ($request->id) {
-                $request->validate([
-              
-                ]);
+                // $title = "Edit User";
+                $msg = "Menu Edited Successfully!";
+                $data = menu::find($request->id);
             } else {
-                $request->validate([
-                   'name' => 'unique:menus',
-                   'url' => 'unique:menus',
+                // $title = "Add User";
+                $msg = "Menu Added Successfully!";
+                $data = new menu;
+            }
+
+            if ($request->isMethod('post')) {
+                if ($request->id) {
+                    $request->validate([]);
+                } else {
+                    $request->validate([
+                        'name' => 'unique:menus',
+                        'url' => 'unique:menus',
+                    ]);
+                }
+                $data->name = ucwords($request->name);
+                $data->url  = $request->url;
+                $data->parent_id = $request->parentId;
+                $data->order  = $request->order;
+                $data->external  = $request->urlType;
+                $data->save();
+                return response()->json([
+                    'status' => 200,
+                    'message' => $msg,
+                    'data' => $data
                 ]);
             }
-            $data->name = ucwords($request->name);
-            $data->url  = $request->url ;
-            $data->parent_id = $request->parentId;
-            $data->order  = $request->order ;
-            $data->external  = $request->urlType ;
-            $data->save();
+        } catch (\PDOException $e) {
+            \Log::error('A PDOException occurred: ' . $e->getMessage());
             return response()->json([
-                'status' => 200,
-                'message' => $msg,
-                'data'=>$data
-            ]);
+                'status' => 500,
+                'message' => 'Database error occurred.',
+                'error' => $e->getMessage()
+            ], 500);
+        } catch (\Exception $e) {
+            \Log::error('An exception occurred: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'An error occurred while fetching the data.',
+                'error' => $e->getMessage()
+            ], 500);
+        } catch (\Throwable $e) {
+            \Log::error('An unexpected exception occurred: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'An unexpected error occurred.',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
     }
 }

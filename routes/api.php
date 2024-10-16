@@ -64,6 +64,8 @@ Route::middleware('auth:api')->group(function () {
 });
 
 
+
+
 Route::controller(homeController::class)->group(function () {
     Route::get('headerMenu', 'headerMenu');
     Route::get('footerMenu', 'footerMenu');
