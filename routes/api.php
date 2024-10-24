@@ -34,6 +34,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::controller(bannerController::class)->group(function () {
         Route::get('get-banner', 'getBanner');
+        Route::post('add-edit-banner', 'addBanner');
+        Route::delete('delete-banner', 'deleteBanner');
     });
 
     Route::controller(menuController::class)->group(function () {
@@ -61,6 +63,7 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::post('send-mail', [MailController::class, 'index']);
+    Route::get('mail', [MailController::class, 'getMail']);
 });
 
 
